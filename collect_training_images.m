@@ -4,22 +4,22 @@
 
 clear;
 
-p=pwd;
-testingSet='Set14';  
-testIMG='lenna';
-pattern='.bmp';
+p = pwd;
+testingSet = 'Set14';  
+testIMG = 'lenna';
+pattern = '.bmp';
 % flag=0; %  flag: 0-free  1-add noise  2-add blur
 
-upscaling = 2;  %  SR factor
+upScaling = 2;  %  SR factor
 
-theta=[0 90 180 270];  %  rotate angle
+theta = [0 90 180 270];  %  rotate angle
 
 %scale image for creating more training data
-numscales=0;
-scalefactor=0.90;
+numScales = 0;
+scaleFactor = 0.90;
 
-input_dir=fullfile(p,testingSet,strcat(testIMG,pattern));
-output_dir=fullfile(p,'trainingIMG',[ testingSet '_' testIMG]);
+inputDir = fullfile(p, testingSet, strcat(testIMG, pattern));
+outputDir = fullfile(p, 'trainingIMG', [testingSet '_' testIMG]);
 % if flag==1 
 %     output_dir=[output_dir '_noise'];
 % end
@@ -27,13 +27,13 @@ output_dir=fullfile(p,'trainingIMG',[ testingSet '_' testIMG]);
 %     output_dir=[output_dir '_blur'];
 % end
 
-if ~exist(output_dir,'dir')
-    mkdir(output_dir);
+if ~exist(outputDir, 'dir')
+    mkdir(outputDir);
 end
 
 
-origin=imread(input_dir);
-inputIMG=imresize(origin,1/upscaling,'bicubic');
+origin = imread(inputDir);
+inputIMG = imresize(origin, 1/upScaling, 'bicubic');
 % %add noise
 % if flag==1
 %     inputIMG = imnoise(inputIMG,'gaussian',0,0.005);%%%%%%%%%%%
@@ -45,27 +45,27 @@ inputIMG=imresize(origin,1/upscaling,'bicubic');
 % end
 
 
-for i=1:4
+for i = 1:4
     %rotate
-    rotateIMG=imrotate(inputIMG,theta(i));
-    imwrite(rotateIMG,[ output_dir '\' testIMG '_r' num2str(theta(i)) '' pattern]);
+    rotateIMG = imrotate(inputIMG, theta(i));
+    imwrite(rotateIMG, [outputDir '\' testIMG '_r' num2str(theta(i)) '' pattern]);
     
     %scale image for creating more training data
-    for scale = 1:numscales
-        sfactor = scalefactor^scale;
+    for scale = 1:numScales
+        sfactor = scaleFactor^scale;
         scaleIMG = imresize(rotateIMG, sfactor, 'bicubic');
-        imwrite(scaleIMG,[ output_dir '\' testIMG '_r' num2str(theta(i)) '_d' num2str(sfactor) '' pattern]);
+        imwrite(scaleIMG,[outputDir '\' testIMG '_r' num2str(theta(i)) '_d' num2str(sfactor) '' pattern]);
     end
     
     %flip
-    flipIMG=flip(rotateIMG,1);
-    imwrite(flipIMG,[ output_dir '\' testIMG '_r' num2str(theta(i)) '_f' pattern]);
+    flipIMG = flip(rotateIMG,1);
+    imwrite(flipIMG, [outputDir '\' testIMG '_r' num2str(theta(i)) '_f' pattern]);
     
     %scale image for creating more training data
-    for scale = 1:numscales
-        sfactor = scalefactor^scale;
+    for scale = 1:numScales
+        sfactor = scaleFactor^scale;
         scaleIMG = imresize(flipIMG, sfactor, 'bicubic');
-        imwrite(scaleIMG,[ output_dir '\' testIMG '_r' num2str(theta(i)) '_f' '_d' num2str(sfactor) '' pattern]);
+        imwrite(scaleIMG,[outputDir '\' testIMG '_r' num2str(theta(i)) '_f' '_d' num2str(sfactor) '' pattern]);
     end
 
 end
