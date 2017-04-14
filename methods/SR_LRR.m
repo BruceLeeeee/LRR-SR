@@ -1,4 +1,4 @@
-function [imgs, midres] = SR_LLE_LRR(conf, imgs, NN)
+function [imgs, midres] = SR_LRR(conf, imgs, NN)
 
     load('plores_ft');
     load('phires');
@@ -38,4 +38,4 @@ function [imgs, midres] = SR_LLE_LRR(conf, imgs, NN)
         fprintf('.');
     end
 fprintf('\n');
-clear D;
+

@@ -50,4 +50,4 @@ function [imgs, midres] = SR_LLE(conf, imgs, NN)
         fprintf('.');
     end
 fprintf('\n');
-clear D;
+
