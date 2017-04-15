@@ -11,10 +11,10 @@
 %        hires:         high resolution sample cooresponding to it's low resolution version
 %        hires_ft:      high resolution feature samples cooresponding to it's low resolution version
 
-function [lores_ft_pca,lores_ft,hires,hires_ft] = collect_samples(conf, ohires, numscales, scalefactor)
+function [lores_ft, hires, hires_ft] = collect_samples(conf, ohires, numscales, scalefactor)
 
 lores_ft = [];
-lores_ft_pca = [];
+% lores_ft_pca = [];
 hires = [];
 hires_ft = [];
 
@@ -40,5 +40,5 @@ for scale = 1:numscales
     hires = [hires collect(conf, patches, conf.scale, {})];
     hires_ft = [hires_ft collect(conf, patches, conf.scale, conf.filters)]; 
     lores_ft = [lores_ft features];
-    lores_ft_pca = [lores_ft_pca conf.V_pca' * features];
+%     lores_ft_pca = [lores_ft_pca conf.V_pca' * features];
 end
