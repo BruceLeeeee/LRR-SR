@@ -8,7 +8,7 @@ function [imgs, midres] = SR_LRR_ML(conf, imgs, NN)
 %     D = pdist2_large(phires_ft', phires_ft', 'euclidean');
     D=[];
     [eigvector] = MetricImitation(plores_ft', phires_ft', D, NN, 'Eigenmaps');
-    plores = (plores' * eigvector)'; %preject trainning sample 
+    plores_ft = (plores_ft' * eigvector)'; %preject trainning sample 
     clear D;
     
 % Super-Resolution Iteration
@@ -27,13 +27,13 @@ function [imgs, midres] = SR_LRR_ML(conf, imgs, NN)
 %         D = pdist2(single(plores'),single(features')); %  faster but need more memory
         for t = 1:size(features,2)
 %             [~, idx] = sort(D(:,t));
-            D = pdist2(single(plores'),single(features(:,t)'));
+            D = pdist2(single(plores_ft'),single(features(:,t)'));
             [~, idx] = sort(D);
 %             D = abs(plores'*features(:,t));
 %             [~, idx] = sort(D,'descend'); 
 
             % use references[2] method for low rank representation
-            [coeffs,~] = lrraffine(features(:,t),plores(:,idx(1:NN)),1);
+            [coeffs,~] = lrraffine(features(:,t),plores_ft(:,idx(1:NN)),1);
 
             % Reconstruct using patches' dictionary            
             patches(:,t) = phires(:,idx(1:NN))*coeffs; 
